@@ -1,0 +1,392 @@
+[
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:02Z",
+    "agent_role": "ROLE_ROUTER",
+    "skill_invoked": "conformal_intake_router.md",
+    "target_checklist_item": null,
+    "payload": {
+      "schema_version": "1.2.0",
+      "tenant_id": "a0000000-0000-0000-0000-000000000001",
+      "incident_cluster_id": "b0000000-0000-0000-0000-000000004401",
+      "routing_lane": "STANDARD_DEFERRAL",
+      "timestamps": {
+        "ingestion_timestamp_utc": "2026-10-24T20:12:01Z",
+        "clustering_window_start_utc": "2026-10-24T20:10:00Z",
+        "clustering_window_end_utc": "2026-10-24T20:12:01Z",
+        "handoff_timestamp_utc": "2026-10-24T20:12:02Z"
+      },
+      "source_alert_ids": [
+        "ALT-2026-9921"
+      ],
+      "normalized_ocsf_events": [
+        {
+          "class_uid": 4009,
+          "activity_name": "Email Inbound",
+          "sender": "security@micros0ft-update.com",
+          "recipient": "alice@company.com"
+        }
+      ],
+      "graph_blast_radius": {
+        "target_node": "WS-ALICE-11",
+        "impacted_entities": [
+          "WS-ALICE-11",
+          "alice@company.com"
+        ],
+        "asset_tier": 3
+      },
+      "identity_context": {
+        "username": "alice",
+        "email": "alice@company.com",
+        "role": "Finance Associate"
+      },
+      "process_lineage": [
+        {
+          "pid": 4820,
+          "process_name": "outlook.exe"
+        }
+      ],
+      "lookback_windows_applied": {
+        "email_domain_lookback_hours": 72
+      },
+      "enrichment_status": {
+        "domain_reputation": "SUSPICIOUS",
+        "whois_age_days": 2
+      },
+      "sanitization_truncation_flags": {
+        "scrubbed_credentials": 0,
+        "truncated_fields": []
+      },
+      "query_perimeter": {
+        "target_hosts": [
+          "WS-ALICE-11"
+        ],
+        "target_users": [
+          "alice@company.com"
+        ],
+        "lookback_window_start_utc": "2026-10-21T20:12:01Z",
+        "lookback_window_end_utc": "2026-10-24T20:12:01Z"
+      },
+      "evaluation_metadata": {
+        "non_evidentiary_for_agents": true,
+        "s_score": 0.82,
+        "theta_low": 0.4,
+        "theta_high": 0.85,
+        "aact_action_rate": 0.05,
+        "aip_rarity_score": 0.91
+      },
+      "transport_security": {
+        "nonce": "c0000000-0000-0000-0000-000000000001",
+        "sent_at": "2026-10-24T20:12:02Z",
+        "signature": "3045022100e4b868a2d1f95c47289b0dc3729e2f41",
+        "signer_identity": "PHASE1_FASTPATH_GATEWAY"
+      }
+    },
+    "entry_id": "LEDGER_000",
+    "prev_entry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "per_entry_salt": "fb23be8b1890c8bc321dfb99b145504c90427bb8e34feb90e30ed667ce8f8ff1",
+    "payload_commitment": "6ba768111d3065f21c2d60b29c857c55ea91e05fb31d189c8a5e51270541b541",
+    "entry_hash": "4a485349939ead10519b2087cfdb4d78aa58fb24efc153428698d2b769b3c4a1"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:05Z",
+    "agent_role": "ROLE_PLANNER",
+    "skill_invoked": "hypothesis_tree_builder.md",
+    "target_checklist_item": "CHK_001",
+    "payload": {
+      "checklist_id": "CHK_001",
+      "status": "PROPOSED",
+      "hypotheses": {
+        "H1": "Spear-phishing campaign deploying credential harvest link.",
+        "H2": "Authorized enterprise phishing awareness training simulation."
+      },
+      "verification_checklist": [
+        "chk_payload_reputation",
+        "chk_auth_headers",
+        "chk_user_interaction",
+        "chk_simulation_headers",
+        "chk_post_click_auth_events"
+      ]
+    },
+    "entry_id": "LEDGER_001",
+    "prev_entry_hash": "4a485349939ead10519b2087cfdb4d78aa58fb24efc153428698d2b769b3c4a1",
+    "per_entry_salt": "08901e90d24c60451c6a3992087c540ba62c7f400a75b45ed8316844dd441cb1",
+    "payload_commitment": "ce5b3419f2494d160b1c1260e81fe52da012a500d4125d480a637f5eb31c60dd",
+    "entry_hash": "f80e410d605ae9feee3454036cea44f732d89ef6b656f3f514e5f8fbd8d0f35e"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:10Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "threat_intel_enricher.md",
+    "target_checklist_item": "chk_payload_reputation",
+    "payload": {
+      "finding_id": "FND_4401_01",
+      "checklist_item": "chk_payload_reputation",
+      "observable": "micros0ft-update.com",
+      "domain_age_hours": 48,
+      "threat_intel_positives": 9,
+      "verdict": "MALICIOUS_REPUTATION"
+    },
+    "entry_id": "LEDGER_002",
+    "prev_entry_hash": "f80e410d605ae9feee3454036cea44f732d89ef6b656f3f514e5f8fbd8d0f35e",
+    "per_entry_salt": "e4a903c308cf325bf4be00694897a981494e8d57799026159e8e6f620121a94b",
+    "payload_commitment": "2b73a59f5f7a1b62f54b6266af02a1fba104705bda4faf6045bcd909690307c4",
+    "entry_hash": "6b69705844b62359e976c035fb7579ac0c31edd444a3832c6a9a3f7d4555cb51"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:15Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "email_header_analyzer.md",
+    "target_checklist_item": "chk_auth_headers",
+    "payload": {
+      "finding_id": "FND_4401_02",
+      "checklist_item": "chk_auth_headers",
+      "spf_result": "FAIL",
+      "dkim_result": "FAIL",
+      "dmarc_policy": "REJECT",
+      "transport_override": true,
+      "verdict": "HEADER_FORGERY_CONFIRMED"
+    },
+    "entry_id": "LEDGER_003",
+    "prev_entry_hash": "6b69705844b62359e976c035fb7579ac0c31edd444a3832c6a9a3f7d4555cb51",
+    "per_entry_salt": "044eb59f4628cf03d1a66b76352ee00d8e569a11606c7675cb4ab3429f5efa67",
+    "payload_commitment": "4b5f115b4f78a80d6f920f2a1e3003ff9b2f0e6b047fef62142443c0464186d9",
+    "entry_hash": "aaba1d7804aca7ed3f8b359be3b847b216813fb7dde32dea7568842a659633de"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:20Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "mailbox_audit_collector.md",
+    "target_checklist_item": "chk_user_interaction",
+    "payload": {
+      "finding_id": "FND_4401_03",
+      "checklist_item": "chk_user_interaction",
+      "opened_at_utc": "2026-10-24T20:11:42Z",
+      "clicked_at_utc": "2026-10-24T20:11:58Z",
+      "workstation": "WS-ALICE-11",
+      "verdict": "USER_CLICK_CONFIRMED"
+    },
+    "entry_id": "LEDGER_004",
+    "prev_entry_hash": "aaba1d7804aca7ed3f8b359be3b847b216813fb7dde32dea7568842a659633de",
+    "per_entry_salt": "32473066b69078b8aa9aaf7dc237237aa1e85920f61199e002c13670f41525d1",
+    "payload_commitment": "d47c0722c2e34f92ee5c91afdabdcb5766a881a0b471ab8c8b96411e2e390370",
+    "entry_hash": "1e8a62eace5a1e42fea8ac641f1cc86779f8eb25ee8cfb635fe7980de0ac8e4b"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:25Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "phish_simulation_verifier.md",
+    "target_checklist_item": "chk_simulation_headers",
+    "payload": {
+      "finding_id": "FND_4401_04",
+      "checklist_item": "chk_simulation_headers",
+      "simulation_headers_present": false,
+      "campaign_token_found": false,
+      "verdict": "BENIGN_SIMULATION_REFUTED"
+    },
+    "entry_id": "LEDGER_005",
+    "prev_entry_hash": "1e8a62eace5a1e42fea8ac641f1cc86779f8eb25ee8cfb635fe7980de0ac8e4b",
+    "per_entry_salt": "1eaca1b450d2414628c02354d13b6a6f48bc120a5b574443c94dc87cbd8de5b6",
+    "payload_commitment": "8629ae2bdcd93b2d4ddcb0299cbd00ba7ca54645bf2b793507c5c922fe50fffb",
+    "entry_hash": "f5c80925844155df939026bcf998806178b2e9ceb5500efb3dcb2f6fd964830c"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:30Z",
+    "agent_role": "ROLE_ADVERSARY",
+    "skill_invoked": "completeness_auditor.md",
+    "target_checklist_item": "chk_post_click_auth_events",
+    "payload": {
+      "objection_id": "OBJ_4401_01",
+      "objection_type": "EVIDENCE_GAP",
+      "unresolved_checklist_items": [
+        "chk_post_click_auth_events"
+      ],
+      "argument": "Investigator has not proven credential harvesting or account compromise."
+    },
+    "entry_id": "LEDGER_006",
+    "prev_entry_hash": "f5c80925844155df939026bcf998806178b2e9ceb5500efb3dcb2f6fd964830c",
+    "per_entry_salt": "1aca03659914a2ba0f86c0cbdbdfeef4445195e46c141a9a502f96ff0613f814",
+    "payload_commitment": "c617d5281e4018ddc63d270c4eb6926c5127d5a789005403b806eda9f3e31b49",
+    "entry_hash": "67d1921ef1eeee38792f8279f265c1bbdc981206c9770a8c14ce157b87408087"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:35Z",
+    "agent_role": "ROLE_JUDGE",
+    "skill_invoked": "remand_synthesizer.md",
+    "target_checklist_item": "chk_post_click_auth_events",
+    "payload": {
+      "remand_id": "REM_4401_01",
+      "status": "SUSTAINED",
+      "target_checklist_item": "chk_post_click_auth_events",
+      "mandate": "Execute targeted delta query on IdP authentication logs within 30m of user click."
+    },
+    "entry_id": "LEDGER_007",
+    "prev_entry_hash": "67d1921ef1eeee38792f8279f265c1bbdc981206c9770a8c14ce157b87408087",
+    "per_entry_salt": "40395075e673234302fecd25610c1e3dae2032ac1aed79cd26cf07a05f3ca713",
+    "payload_commitment": "3d425adfc9ccf0a16c5df2659c08ba8294f06eb212fe240ba7ce6e00f8d29507",
+    "entry_hash": "9893fed0613062abb7bec4cd03a7c2d464d838af7ef3e600710134d97cd6bb13"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:40Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "idp_token_auditor.md",
+    "target_checklist_item": "chk_post_click_auth_events",
+    "payload": {
+      "finding_id": "FND_4401_05",
+      "finding_class": "FND_TOKEN_MINT",
+      "checklist_item": "chk_post_click_auth_events",
+      "harvest_url": "login.micros0ft-update[.]com/auth/login",
+      "harvest_timestamp_utc": "2026-10-24T20:12:04Z",
+      "token_mint_timestamp_utc": "2026-10-24T20:12:08Z",
+      "anomalous_ip": "198.51.100.89",
+      "asn": 48212,
+      "geo_country": "Russian Federation",
+      "verdict": "CREDENTIAL_HARVEST_AND_TOKEN_MINT_CONFIRMED"
+    },
+    "entry_id": "LEDGER_008",
+    "prev_entry_hash": "9893fed0613062abb7bec4cd03a7c2d464d838af7ef3e600710134d97cd6bb13",
+    "per_entry_salt": "02601e459c1d6b1a24c8042f6a3c7a339ebd1966126702246034502451691c73",
+    "payload_commitment": "2804438baf18c24015cde3f23bf4dcb4693e9d538582e71c52c0d4e873f02c26",
+    "entry_hash": "9b942c74473a8c2559ea9555b125f4709506e1ccd6a901ca1a6bf33480a1e287"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:45Z",
+    "agent_role": "ROLE_ADVERSARY",
+    "skill_invoked": "concession_generator.md",
+    "target_checklist_item": "OBJ_4401_01",
+    "payload": {
+      "concession_id": "CONC_4401_01",
+      "status": "UNCONTESTED_MALICIOUS",
+      "withdrawn_objection": "OBJ_4401_01",
+      "concession_summary": "Credential theft and token issuance confirmed in LEDGER_008. Benign hypothesis refuted."
+    },
+    "entry_id": "LEDGER_009",
+    "prev_entry_hash": "9b942c74473a8c2559ea9555b125f4709506e1ccd6a901ca1a6bf33480a1e287",
+    "per_entry_salt": "369be81cd53578e765392389a159d9ae64700815bde263aab7db33f47ca05b36",
+    "payload_commitment": "59b547ecff943995b19b83a3114ea2ef53e66a22e73cd5aa129ed7a17ecf6c19",
+    "entry_hash": "d3982af3443e53b50688de51fd79737e8b82613737607ea96938d8e758b502cd"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:12:50Z",
+    "agent_role": "ROLE_JUDGE",
+    "skill_invoked": "verdict_synthesizer.md",
+    "target_checklist_item": null,
+    "payload": {
+      "verdict_id": "VRD_4401_01",
+      "disposition": "TRUE_POSITIVE",
+      "threat_category": "Spear-Phishing Credential Harvest & Session Compromise",
+      "confidence_p": 0.992,
+      "severity_baseline": 5,
+      "severity_citation": "LEDGER_008",
+      "severity_final": 8,
+      "candidate_actions": [
+        {
+          "action_type": "PURGE_MESSAGE",
+          "c_a": 1,
+          "target": "MSG-8812-9901"
+        },
+        {
+          "action_type": "REVOKE_ACTIVE_SESSIONS",
+          "c_a": 1,
+          "target": "alice@company.com"
+        },
+        {
+          "action_type": "ISOLATE_HOST",
+          "c_a": 2,
+          "target": "WS-ALICE-11"
+        }
+      ]
+    },
+    "entry_id": "LEDGER_010",
+    "prev_entry_hash": "d3982af3443e53b50688de51fd79737e8b82613737607ea96938d8e758b502cd",
+    "per_entry_salt": "0e5dc1339b85a23c4998bb189ae252f4960ac5e652b0aa1d22ae95cd5d9006d5",
+    "payload_commitment": "957d5273e0aa3e9a6ac5850dc0ee477aaf3de8604104df8682d671c1823d8d04",
+    "entry_hash": "560fc55ffdec5207c5a73aee0ff48e70028df05c600593b2c409030bb7a9ebba"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:13:00Z",
+    "agent_role": "ROLE_REMEDIATION_EXECUTOR",
+    "skill_invoked": "soar_action_dispatcher.md",
+    "target_checklist_item": null,
+    "payload": {
+      "receipt_id": "REC_4401_01",
+      "action_type": "PURGE_MESSAGE",
+      "status": "CONFIRMED",
+      "rsem": 88.8,
+      "target": "MSG-8812-9901",
+      "execution_timestamp_utc": "2026-10-24T20:13:00Z"
+    },
+    "entry_id": "LEDGER_011",
+    "prev_entry_hash": "560fc55ffdec5207c5a73aee0ff48e70028df05c600593b2c409030bb7a9ebba",
+    "per_entry_salt": "c9c81c9e5ed5751493f5fda35562c6c034c00e9358ae7e057702a2da64844faf",
+    "payload_commitment": "7f51b2660b0c0d0eae86c18839bf2bcfb50b03301a4429a59c9c8ca2e442d258",
+    "entry_hash": "a176559b9d7a8a7e987166db894dd2c9dfc89e2c5f79afa25d80d341ca303431"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:13:05Z",
+    "agent_role": "ROLE_REMEDIATION_EXECUTOR",
+    "skill_invoked": "soar_action_dispatcher.md",
+    "target_checklist_item": null,
+    "payload": {
+      "receipt_id": "REC_4401_02",
+      "action_type": "REVOKE_ACTIVE_SESSIONS",
+      "status": "CONFIRMED",
+      "rsem": 88.8,
+      "target": "alice@company.com",
+      "execution_timestamp_utc": "2026-10-24T20:13:05Z"
+    },
+    "entry_id": "LEDGER_012",
+    "prev_entry_hash": "a176559b9d7a8a7e987166db894dd2c9dfc89e2c5f79afa25d80d341ca303431",
+    "per_entry_salt": "52b80a362072e20ac173189072d907c3741f33e14bbc7af6be6fc0cc79ad531c",
+    "payload_commitment": "5f650afa568055b6236bc2221d1436cd403efb569c25e98de73b349eb865b1e5",
+    "entry_hash": "ac7d6572f7940d1fe0175a64c487701a5daf07f8d0cd115a85a0e5954f056d70"
+  },
+  {
+    "investigation_id": "INV-2026-4401",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-24T20:13:10Z",
+    "agent_role": "ROLE_REMEDIATION_EXECUTOR",
+    "skill_invoked": "soar_action_dispatcher.md",
+    "target_checklist_item": null,
+    "payload": {
+      "receipt_id": "REC_4401_03",
+      "action_type": "ISOLATE_HOST",
+      "status": "CONFIRMED",
+      "rsem": 79.9,
+      "target": "WS-ALICE-11",
+      "preserve_pinhole": true,
+      "rollback_staged": true,
+      "execution_timestamp_utc": "2026-10-24T20:13:10Z"
+    },
+    "entry_id": "LEDGER_013",
+    "prev_entry_hash": "ac7d6572f7940d1fe0175a64c487701a5daf07f8d0cd115a85a0e5954f056d70",
+    "per_entry_salt": "c04fd1e32354f9fddbf7fe68f2607032c066a28af9d5d727794f8134d13e5ba6",
+    "payload_commitment": "379485b389ebed034e3b0916c862dd20b226ec5f273f626beecf2221c815898c",
+    "entry_hash": "f1ee3e47957b57aeb428908d41cc7d60b704da7694e550f26adb4ec9c090c3ac"
+  }
+]

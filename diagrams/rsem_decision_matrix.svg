@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 640" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .text-title { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 20px; font-weight: bold; fill: #f8fafc; }
+      .text-subtitle { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .axis-line { stroke: #64748b; stroke-width: 2; }
+      .grid-line { stroke: #334155; stroke-width: 1; stroke-dasharray: 4,4; }
+      .axis-label { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: bold; fill: #cbd5e1; }
+      .tick-label { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #94a3b8; text-anchor: middle; }
+      .tick-label-y { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #94a3b8; text-anchor: end; }
+      
+      .zone-ceiling { fill: #ef4444; fill-opacity: 0.18; stroke: #ef4444; stroke-width: 2; }
+      .zone-allow { fill: #10b981; fill-opacity: 0.22; stroke: #10b981; stroke-width: 2; }
+      .zone-gray { fill: #f59e0b; fill-opacity: 0.18; stroke: #f59e0b; stroke-width: 2; }
+      .zone-gatekeeper { fill: #64748b; fill-opacity: 0.18; stroke: #64748b; stroke-width: 2; }
+      
+      .zone-title { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: bold; }
+      .zone-desc { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #e2e8f0; }
+      .card-box { fill: #1e293b; stroke: #475569; stroke-width: 1.5; rx: 6; ry: 6; }
+      .card-title { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 12px; font-weight: bold; fill: #f8fafc; }
+      .card-code { font-family: 'Consolas', monospace; font-size: 11px; }
+      .badge-escalate { fill: #7f1d1d; stroke: #ef4444; stroke-width: 1; rx: 4; }
+      .badge-allow { fill: #064e3b; stroke: #10b981; stroke-width: 1; rx: 4; }
+      .badge-oob { fill: #78350f; stroke: #f59e0b; stroke-width: 1; rx: 4; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1150" height="640" class="bg" />
+
+  <!-- Title -->
+  <text x="50" y="45" class="text-title">Risk-Sensitive Execution Metric (RSEM) Decision Matrix</text>
+  <text x="50" y="70" class="text-subtitle">Specification v3.1 Section 5.3 &amp; Table 22: Front-line Autonomy Ceiling (C_A &gt;= 4), Gray-Zone OOB Attestation, and OPA PEP Enforcements</text>
+
+  <!-- Coordinate System: Origin at (120, 520) -->
+  <!-- Width: 600px for CA in [1, 10] -> 66.6px per CA unit -->
+  <!-- Height: 400px for RSEM in [0, 100] -> 4px per RSEM point -->
+  
+  <!-- Zone 3: Gatekeeper (CA <= 3, RSEM < 50) -->
+  <!-- X: 120 to 320 (CA=1 to CA=3.5 approx), Y: 320 to 520 -->
+  <rect x="120" y="320" width="180" height="200" class="zone-gatekeeper" />
+
+  <!-- Zone 2: Gray Zone (CA <= 3, 50 <= RSEM < 75) -->
+  <!-- X: 120 to 300, Y: 220 to 320 -->
+  <rect x="120" y="220" width="180" height="100" class="zone-gray" />
+
+  <!-- Zone 1: Autonomous Execution (CA <= 3, RSEM >= 75) -->
+  <!-- X: 120 to 300, Y: 120 to 220 -->
+  <rect x="120" y="120" width="180" height="100" class="zone-allow" />
+
+  <!-- Zone 4 / Rule 1: Front-line Hard Autonomy Ceiling (CA >= 4, across all RSEM 0-100) -->
+  <!-- X: 300 to 720, Y: 120 to 520 -->
+  <rect x="300" y="120" width="420" height="400" class="zone-ceiling" />
+
+  <!-- Threshold Horizontal Lines -->
+  <line x1="120" y1="220" x2="720" y2="220" class="grid-line" stroke="#10b981" />
+  <line x1="120" y1="320" x2="720" y2="320" class="grid-line" stroke="#f59e0b" />
+
+  <!-- Hard Ceiling Vertical Line (CA = 4) -->
+  <line x1="300" y1="120" x2="300" y2="520" stroke="#ef4444" stroke-width="3" />
+
+  <!-- Axes -->
+  <line x1="120" y1="520" x2="730" y2="520" class="axis-line" />
+  <line x1="120" y1="110" x2="120" y2="520" class="axis-line" />
+
+  <!-- Y Axis Ticks (RSEM) -->
+  <text x="105" y="524" class="tick-label-y">0</text>
+  <text x="105" y="324" class="tick-label-y" font-weight="bold" fill="#f59e0b">50</text>
+  <text x="105" y="224" class="tick-label-y" font-weight="bold" fill="#10b981">75</text>
+  <text x="105" y="124" class="tick-label-y">100</text>
+  <text x="45" y="315" class="axis-label" transform="rotate(-90 45 315)">Risk Metric RSEM (0 - 100)</text>
+
+  <!-- X Axis Ticks (Cost of Action C_A) -->
+  <text x="150" y="542" class="tick-label">C_A = 1</text>
+  <text x="210" y="542" class="tick-label">C_A = 2</text>
+  <text x="270" y="542" class="tick-label">C_A = 3</text>
+  <text x="330" y="542" class="tick-label" font-weight="bold" fill="#ef4444">C_A = 4</text>
+  <text x="420" y="542" class="tick-label">C_A = 6</text>
+  <text x="540" y="542" class="tick-label">C_A = 8</text>
+  <text x="660" y="542" class="tick-label">C_A = 10</text>
+  <text x="420" y="570" class="axis-label" text-anchor="middle">Disruption Cost of Action C_A (Table 21)</text>
+
+  <!-- On-Chart Annotations -->
+  <!-- Zone 1 Text -->
+  <text x="135" y="155" class="zone-title" fill="#10b981">ZONE 1: ALLOW</text>
+  <text x="135" y="175" class="zone-desc">RSEM &gt;= 75 &amp; C_A &lt;= 3</text>
+  <text x="135" y="195" class="zone-desc">Autonomous Actuation</text>
+
+  <!-- Zone 2 Text -->
+  <text x="135" y="250" class="zone-title" fill="#f59e0b">ZONE 2: GRAY ZONE</text>
+  <text x="135" y="270" class="zone-desc">50 &lt;= RSEM &lt; 75 &amp; C_A &lt;= 3</text>
+  <text x="135" y="290" class="zone-desc">OOB Identity Attestation</text>
+
+  <!-- Zone 3 Text -->
+  <text x="135" y="380" class="zone-title" fill="#94a3b8">ZONE 3: ESCALATE</text>
+  <text x="135" y="400" class="zone-desc">RSEM &lt; 50 &amp; C_A &lt;= 3</text>
+  <text x="135" y="420" class="zone-desc">Low Conviction Gatekeeper</text>
+
+  <!-- Zone 4 Ceiling Text -->
+  <text x="340" y="170" class="zone-title" fill="#ef4444" font-size="16px">RULE 1: HARD AUTONOMY CEILING (C_A &gt;= 4)</text>
+  <text x="340" y="195" class="zone-desc" font-size="13px">Strictly barred from autonomous execution across ALL RSEM [0, 100].</text>
+  <text x="340" y="215" class="zone-desc" font-size="13px">Overrides model confidence (P), severity (C_I), and user denial.</text>
+  <text x="340" y="240" class="zone-desc">Requires signed human Expert authorization (Four-Eyes on Tier 0/1).</text>
+
+  <!-- Right Side: Details & 3-State OOB Legend -->
+  <g transform="translate(760, 110)">
+    <!-- OOB Box -->
+    <rect width="350" height="230" class="card-box" />
+    <text x="16" y="28" class="card-title">Zone 2: 3-State OOBAttestation Governance</text>
+    
+    <rect x="16" y="45" width="318" height="48" fill="#0f172a" rx="4" />
+    <text x="24" y="65" class="card-code" fill="#f59e0b">OOBStatus.PENDING</text>
+    <text x="24" y="82" class="zone-desc">Verdict: OOB_REQUIRED (Step-up challenge dispatched)</text>
+
+    <rect x="16" y="103" width="318" height="48" fill="#0f172a" rx="4" />
+    <text x="24" y="123" class="card-code" fill="#10b981">OOBStatus.DENIED_BY_USER</text>
+    <text x="24" y="140" class="zone-desc">Verdict: ALLOW (User confirmed fraud; action approved)</text>
+
+    <rect x="16" y="161" width="318" height="48" fill="#0f172a" rx="4" />
+    <text x="24" y="181" class="card-code" fill="#60a5fa">OOBStatus.CONFIRMED_LEGITIMATE</text>
+    <text x="24" y="198" class="zone-desc">Verdict: STAND_DOWN (User confirmed legitimate activity)</text>
+    
+    <text x="16" y="222" class="zone-desc" fill="#f87171">* Non-identity actions in Zone 2 strictly ESCALATE.</text>
+  </g>
+
+  <!-- Right Side: High-Impact Action Catalog -->
+  <g transform="translate(760, 360)">
+    <rect width="350" height="160" class="card-box" style="stroke: #ef4444;" />
+    <text x="16" y="28" class="card-title" fill="#f87171">High-Impact Ceilings (Table 21)</text>
+    <text x="16" y="52" class="card-code" fill="#cbd5e1">ISOLATE_HOST (Tier 0, 1, 2): C_A = 10, 9, 5</text>
+    <text x="16" y="72" class="card-code" fill="#cbd5e1">DISABLE_ACCOUNT (Tier 0, 1, 2): C_A = 8, 8, 6</text>
+    <text x="16" y="92" class="card-code" fill="#cbd5e1">REVOKE_ACTIVE_SESSIONS (Tier 0): C_A = 4</text>
+    
+    <text x="16" y="122" class="zone-desc" fill="#93c5fd">Four-Eyes Dual Control (Invariant #5):</text>
+    <text x="16" y="140" class="zone-desc">Requires 2 distinct human experts (E_1 != E_2). T_4eyes = 900s</text>
+  </g>
+</svg>

@@ -1,0 +1,337 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "================================================================================\nAIRLOCK CONTRACT: IncidentHandoffEnvelope v1.2.0\nGoverns the boundary between Upstream Triage and Autonomous Agent Investigation.\nEnforces Invariant #2 (Cognitive Anti-Anchoring) and the Bounded Query Perimeter.\n================================================================================",
+  "title": "IncidentHandoffEnvelope_v1_2_1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tenant_id",
+    "incident_cluster_id",
+    "routing_lane",
+    "timestamps",
+    "source_alert_ids",
+    "normalized_ocsf_events",
+    "graph_blast_radius",
+    "identity_context",
+    "process_lineage",
+    "lookback_windows_applied",
+    "enrichment_status",
+    "sanitization_truncation_flags",
+    "query_perimeter",
+    "evaluation_metadata",
+    "transport_security"
+  ],
+  "properties": {
+    "schema_version": {
+      "$comment": "Pins the contract version. Must be strictly 1.2.0 to ensure schema compatibility.",
+      "type": "string",
+      "enum": [
+        "1.2.0",
+        "1.2.1"
+      ]
+    },
+    "tenant_id": {
+      "$comment": "Multi-tenancy isolation anchor: UUID representing the enterprise customer organization.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "incident_cluster_id": {
+      "$comment": "Unique identifier for this specific correlated attack cluster across telemetry sources.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "routing_lane": {
+      "$comment": "Determines investigation priority and timeout budgets (e.g. 480s for expedited).",
+      "type": "string",
+      "enum": [
+        "STANDARD_DEFERRAL",
+        "EXPEDITED_PRIORITY",
+        "HUNT_LEAD"
+      ]
+    },
+    "timestamps": {
+      "$comment": "Audit trail timestamps tracking the alert lifecycle from raw wire arrival to agent handoff.",
+      "type": "object",
+      "required": [
+        "ingestion_timestamp_utc",
+        "clustering_window_start_utc",
+        "clustering_window_end_utc",
+        "handoff_timestamp_utc"
+      ],
+      "properties": {
+        "ingestion_timestamp_utc": {
+          "$comment": "When the first raw alert in this cluster was received by triage gateway.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "clustering_window_start_utc": {
+          "$comment": "Start time of the correlation graph aggregation window.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "clustering_window_end_utc": {
+          "$comment": "End time of the correlation graph aggregation window.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "handoff_timestamp_utc": {
+          "$comment": "Timestamp when Upstream Triage signed and dispatched the handoff envelope.",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "source_alert_ids": {
+      "$comment": "Raw alert IDs from external SIEM/EDR systems that were correlated into this single cluster.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "normalized_ocsf_events": {
+      "$comment": "Telemetry normalized into standard OCSF v1.3 JSON objects (Process, Network, Authentication).",
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "graph_blast_radius": {
+      "$comment": "In-memory Memgraph blast-radius output: affected nodes, asset tier (Tier 0-3), and degree centrality.",
+      "type": "object"
+    },
+    "identity_context": {
+      "$comment": "Active Directory / IdP context for users involved (roles, groups, privilege tier).",
+      "type": "object"
+    },
+    "process_lineage": {
+      "$comment": "Process execution trees (e.g., winword.exe -> powershell.exe -> whoami.exe).",
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "lookback_windows_applied": {
+      "$comment": "Domain-specific historical lookback depths (e.g. 72h for email, 24h for auth, 7d for DNS).",
+      "type": "object"
+    },
+    "enrichment_status": {
+      "$comment": "Threat intelligence lookups: domain age, IP reputation, VirusTotal hashes, OOB challenge logs.",
+      "type": "object"
+    },
+    "sanitization_truncation_flags": {
+      "$comment": "AIOpsShield sanitizer metrics: count of scrubbed credentials, stripped ANSI codes, and field clamps.",
+      "type": "object"
+    },
+    "query_perimeter": {
+      "$comment": "SAFETY GUARDRAIL (Fix 8): Defines the strict perimeter fence for investigation agents. Agents (Investigative Executor) are physically refused if they attempt SIEM queries outside these target hosts, users, or time window.",
+      "type": "object",
+      "description": "Proposed bounding perimeter for Investigative Executor queries populated by triage gateway; queries outside scope are refused",
+      "required": [
+        "target_hosts",
+        "target_users",
+        "lookback_window_start_utc",
+        "lookback_window_end_utc"
+      ],
+      "properties": {
+        "target_hosts": {
+          "$comment": "Specific hostnames the agents are permitted to query forensic evidence for.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "target_users": {
+          "$comment": "Specific usernames the agents are permitted to query forensic evidence for.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lookback_window_start_utc": {
+          "$comment": "Earliest allowable timestamp for agent forensic queries.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "lookback_window_end_utc": {
+          "$comment": "Latest allowable timestamp for agent forensic queries.",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "evaluation_metadata": {
+      "$comment": "INVARIANT #2 (COGNITIVE ANTI-ANCHORING): Holds Upstream Triage mathematical risk metrics. Must be withheld from LLM agent prompts so agents reason independently from raw facts rather than anchoring on upstream triage score.",
+      "type": "object",
+      "description": "NON-EVIDENTIARY: Withheld from reasoning agent prompts to eliminate anchoring bias",
+      "required": [
+        "non_evidentiary_for_agents",
+        "s_score",
+        "theta_low",
+        "theta_high",
+        "aact_action_rate",
+        "aip_rarity_score"
+      ],
+      "properties": {
+        "non_evidentiary_for_agents": {
+          "$comment": "MUST BE TRUE: Invariant assertion flag guaranteeing this block is stripped before agent prompt generation.",
+          "type": "boolean",
+          "enum": [
+            true
+          ]
+        },
+        "s_score": {
+          "$comment": "Non-conformity score s(X) in [0.0, 1.0] calculated via Conformal Deferral.",
+          "type": "number"
+        },
+        "theta_low": {
+          "$comment": "Lower conformal threshold: alerts below this are candidates for auto-close (post-sleep mode).",
+          "type": "number"
+        },
+        "theta_high": {
+          "$comment": "Upper conformal threshold: alerts above this route to expedited machine-speed priority.",
+          "type": "number"
+        },
+        "aact_action_rate": {
+          "$comment": "Dynamic Action Frequency: historical baseline execution rate for this alert type.",
+          "type": "number"
+        },
+        "aip_rarity_score": {
+          "$comment": "Adaptive Incident Prioritization rarity score based on tenant-specific prevalence.",
+          "type": "number"
+        }
+      }
+    },
+    "transport_security": {
+      "$comment": "AUTHENTICITY & ANTI-REPLAY: Cryptographic proof that this envelope was authored by the genuine triage gateway.",
+      "type": "object",
+      "required": [
+        "nonce",
+        "sent_at",
+        "signature",
+        "signer_identity"
+      ],
+      "properties": {
+        "nonce": {
+          "$comment": "Single-use UUID to prevent replay attacks.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "sent_at": {
+          "$comment": "Transmission timestamp; evaluated by the receiver to reject skewed packets (>10s clock skew).",
+          "type": "string",
+          "format": "date-time"
+        },
+        "signature": {
+          "$comment": "Digital signature created using the gateway's private key.",
+          "type": "string"
+        },
+        "signer_identity": {
+          "$comment": "Authorized signing service identity. Only these two authorized system entities are permitted.",
+          "type": "string",
+          "enum": [
+            "PHASE1_FASTPATH_GATEWAY",
+            "SIGNING_SERVICE_HUNT_LEAD"
+          ]
+        }
+      }
+    },
+    "cadence_profile": {
+      "$comment": "OPTIONAL MACHINE-CADENCE BLOCK: Present only when an active machine-speed attack burst is detected.",
+      "type": "object",
+      "description": "Optional: present only when CADENCE_MACHINE_SPEED is detected",
+      "required": [
+        "flags",
+        "ingress_vector",
+        "origin_ip",
+        "subject_entity_id",
+        "subject_entity_type",
+        "observed_identities",
+        "detection_timestamp",
+        "evidence_summary"
+      ],
+      "properties": {
+        "flags": {
+          "$comment": "Cadence flags, e.g. CADENCE_MACHINE_SPEED.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ingress_vector": {
+          "$comment": "Attack entry point classification. Determines precautionary hold routing.",
+          "type": "string",
+          "enum": [
+            "EXTERNAL_INGRESS",
+            "INTERNAL_ENDPOINT",
+            "UNKNOWN"
+          ]
+        },
+        "origin_ip": {
+          "$comment": "Source IP address triggering the burst.",
+          "type": "string"
+        },
+        "subject_entity_id": {
+          "$comment": "ID of the target host or account experiencing the attack burst.",
+          "type": "string"
+        },
+        "subject_entity_type": {
+          "$comment": "Type of target entity.",
+          "type": "string",
+          "enum": [
+            "HOST",
+            "IDENTITY"
+          ]
+        },
+        "observed_identities": {
+          "$comment": "Accounts targeted or observed during the attack burst.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "detection_timestamp": {
+          "$comment": "Timestamp when cadence velocity threshold was breached.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_summary": {
+          "$comment": "Underlying cadence metrics: command retry velocity and lateral graph edge creation rate.",
+          "type": "object",
+          "required": [
+            "primitive_a_retries",
+            "primitive_b_new_edges",
+            "overflow_fanout_count",
+            "corroborating_rule",
+            "non_evidentiary_for_agents"
+          ],
+          "properties": {
+            "primitive_a_retries": {
+              "$comment": "Primitive A: Count of rapid CLI command-line retries with small edit distance.",
+              "type": "integer"
+            },
+            "primitive_b_new_edges": {
+              "$comment": "Primitive B: Count of new graph edges created within the lateral movement window.",
+              "type": "integer"
+            },
+            "overflow_fanout_count": {
+              "$comment": "Graph degree fan-out count exceeding the baseline threshold.",
+              "type": "integer"
+            },
+            "corroborating_rule": {
+              "$comment": "Independent rule verifying the cadence detection (Anti-Circularity Invariant).",
+              "type": "string"
+            },
+            "non_evidentiary_for_agents": {
+              "$comment": "Withheld from agents to preserve independent analysis.",
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

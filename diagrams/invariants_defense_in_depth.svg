@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 700" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .text-title { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 22px; font-weight: bold; fill: #f8fafc; }
+      .text-subtitle { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #94a3b8; }
+      
+      .layer-card { rx: 8; ry: 8; stroke-width: 2; }
+      .layer-1 { fill: #1e1b4b; stroke: #6366f1; }
+      .layer-2 { fill: #082f49; stroke: #0284c7; }
+      .layer-3 { fill: #450a0a; stroke: #ef4444; }
+      .layer-4 { fill: #022c22; stroke: #10b981; }
+      .layer-5 { fill: #311042; stroke: #a855f7; }
+      
+      .layer-num { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 11px; font-weight: bold; letter-spacing: 1px; }
+      .layer-title { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 15px; font-weight: bold; fill: #ffffff; }
+      .layer-text { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #cbd5e1; }
+      .layer-code { font-family: 'Consolas', monospace; font-size: 11px; }
+      .pill { rx: 4; ry: 4; stroke-width: 1; }
+      .arrow { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1150" height="700" class="bg" />
+
+  <!-- Title -->
+  <text x="50" y="45" class="text-title">Five Core Architectural Invariants: Defense-in-Depth</text>
+  <text x="50" y="70" class="text-subtitle">Autonomous AI SOC Platform Specification v3.1 Section 2.1: Formal System Boundaries and Safety Assurances</text>
+
+  <!-- Layer 1: Invariant #2 (Anti-Anchoring) -->
+  <g transform="translate(50, 105)">
+    <rect width="1050" height="95" class="layer-card layer-1" />
+    <text x="24" y="28" class="layer-num" fill="#a5b4fc">LAYER 1 — INGESTION &amp; PERCEPTION</text>
+    <text x="24" y="50" class="layer-title">Invariant #2: The Cognitive Anti-Anchoring Invariant</text>
+    <text x="24" y="72" class="layer-text">Strips all heuristic triage priors (s_score, theta_high, theta_low, aip_score) before telemetry reaches investigation agents.</text>
+    <text x="640" y="50" class="layer-code" fill="#818cf8">Projection: agent_view(handoff) -&gt; allowlist</text>
+    <text x="640" y="72" class="layer-code" fill="#c7d2fe">Fails closed: CognitiveAnchoringLeakError on smuggled keys</text>
+  </g>
+
+  <line x1="575" y1="200" x2="575" y2="220" class="arrow" />
+
+  <!-- Layer 2: Invariant #3 (Cryptographic Ledger) -->
+  <g transform="translate(50, 220)">
+    <rect width="1050" height="95" class="layer-card layer-2" />
+    <text x="24" y="28" class="layer-num" fill="#38bdf8">LAYER 2 — COMMUNICATION &amp; RECORD OF TRUTH</text>
+    <text x="24" y="50" class="layer-title">Invariant #3: Single Source of Truth / Cryptographic Audit Ledger</text>
+    <text x="24" y="72" class="layer-text">Exclusive medium of inter-agent communication. No informal memory. Monotonic LEDGER_xxx sequence linked to genesis.</text>
+    <text x="640" y="50" class="layer-code" fill="#38bdf8">Commitment: HMAC-SHA256(per_entry_salt, canonical_payload)</text>
+    <text x="640" y="72" class="layer-code" fill="#bae6fd">Integrity: Isolated KMS key_store; WORM pinned head anchor</text>
+  </g>
+
+  <line x1="575" y1="315" x2="575" y2="335" class="arrow" />
+
+  <!-- Layer 3: Invariant #4 (Autonomy Ceiling & Deterministic Severity) -->
+  <g transform="translate(50, 335)">
+    <rect width="1050" height="95" class="layer-card layer-3" />
+    <text x="24" y="28" class="layer-num" fill="#f87171">LAYER 3 — RISK ARBITRATION &amp; GOVERNANCE</text>
+    <text x="24" y="50" class="layer-title">Invariant #4: The Hard Autonomy Ceiling Invariant (C_A &gt;= 4)</text>
+    <text x="24" y="72" class="layer-text">Front-line architectural rule evaluated before RSEM scoring. High disruption (C_A &gt;= 4) unconditionally escalates.</text>
+    <text x="640" y="50" class="layer-code" fill="#f87171">Hard Ceiling: C_A &gt;= 4 overrides model confidence P and OOB</text>
+    <text x="640" y="72" class="layer-code" fill="#fecaca">Raise-Only Severity: C_I = max(C_I_base, C_I(finding_class)) via FND_*</text>
+  </g>
+
+  <line x1="575" y1="430" x2="575" y2="450" class="arrow" />
+
+  <!-- Layer 4: Invariant #1 (Actuation Integrity) -->
+  <g transform="translate(50, 450)">
+    <rect width="1050" height="95" class="layer-card layer-4" />
+    <text x="24" y="28" class="layer-num" fill="#34d399">LAYER 4 — CONTAINMENT AUTHORIZATION &amp; ORDER EXECUTION</text>
+    <text x="24" y="50" class="layer-title">Invariant #1: The Actuation Invariant</text>
+    <text x="24" y="72" class="layer-text">Reasoning agents possess zero credentials. Infrastructure state changes strictly require signed order from PEP ALLOW receipt.</text>
+    <text x="640" y="50" class="layer-code" fill="#34d399">Remediation Executor: Issues HMAC-SHA256 order bound to citation</text>
+    <text x="640" y="72" class="layer-code" fill="#a7f3d0">Order Executor: Checks clock skew, expiry TTL, anti-replay nonces</text>
+  </g>
+
+  <line x1="575" y1="545" x2="575" y2="565" class="arrow" />
+
+  <!-- Layer 5: Invariant #5 (Pre-Release Safety & Four-Eyes Governance) -->
+  <g transform="translate(50, 565)">
+    <rect width="1050" height="95" class="layer-card layer-5" />
+    <text x="24" y="28" class="layer-num" fill="#c084fc">LAYER 5 — STAND-DOWN &amp; DEFENSIVE RELEASE GATES</text>
+    <text x="24" y="50" class="layer-title">Invariant #5: Pre-Release Safety &amp; Four-Eyes Dual Control</text>
+    <text x="24" y="72" class="layer-text">Tier 0/1 auto-close strictly banned during initial triage. Hold release on critical assets strictly requires 2 distinct human experts.</text>
+    <text x="640" y="50" class="layer-code" fill="#c084fc">Two-Person Integrity: Distinct user_id and signing_key (E_1 != E_2)</text>
+    <text x="640" y="72" class="layer-code" fill="#e9d5ff">Fallback: T_4eyes = 900s escalates to SOC Manager; never degrades</text>
+  </g>
+</svg>

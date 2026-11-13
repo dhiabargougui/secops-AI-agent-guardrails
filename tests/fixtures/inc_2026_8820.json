@@ -1,0 +1,429 @@
+[
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:02Z",
+    "agent_role": "ROLE_ROUTER",
+    "skill_invoked": "conformal_intake_router.md",
+    "target_checklist_item": null,
+    "payload": {
+      "schema_version": "1.2.0",
+      "tenant_id": "a0000000-0000-0000-0000-000000000001",
+      "incident_cluster_id": "b0000000-0000-0000-0000-000000008820",
+      "routing_lane": "STANDARD_DEFERRAL",
+      "timestamps": {
+        "ingestion_timestamp_utc": "2026-10-31T18:00:00Z",
+        "clustering_window_start_utc": "2026-10-31T17:50:00Z",
+        "clustering_window_end_utc": "2026-10-31T18:00:00Z",
+        "handoff_timestamp_utc": "2026-10-31T18:00:02Z"
+      },
+      "source_alert_ids": [
+        "ALT-2026-8820-PTH",
+        "ALT-2026-8820-WMI"
+      ],
+      "normalized_ocsf_events": [
+        {
+          "class_uid": 3002,
+          "activity_name": "Logon / Authentication",
+          "technique_id": "T1550.002",
+          "account": "svc_dbadmin",
+          "target_host": "SRV-PROD-DB01"
+        },
+        {
+          "class_uid": 1007,
+          "activity_name": "Process Activity",
+          "technique_id": "T1047",
+          "command_line": "wmic process call create ...",
+          "target_host": "SRV-PROD-DB01"
+        }
+      ],
+      "graph_blast_radius": {
+        "target_node": "SRV-PROD-DB01",
+        "impacted_entities": [
+          "SRV-PROD-DB01",
+          "svc_dbadmin"
+        ],
+        "asset_tier": 1
+      },
+      "identity_context": {
+        "username": "svc_dbadmin",
+        "role": "Database Service Administrator",
+        "privilege_tier": 1
+      },
+      "process_lineage": [
+        {
+          "pid": 2048,
+          "process_name": "wmiprvse.exe"
+        }
+      ],
+      "lookback_windows_applied": {
+        "host_telemetry_lookback_hours": 72
+      },
+      "enrichment_status": {
+        "ip_reputation": "SUSPICIOUS",
+        "change_management_cross_referenced": true
+      },
+      "sanitization_truncation_flags": {
+        "scrubbed_credentials": 0,
+        "truncated_fields": []
+      },
+      "query_perimeter": {
+        "target_hosts": [
+          "SRV-PROD-DB01"
+        ],
+        "target_users": [
+          "svc_dbadmin"
+        ],
+        "lookback_window_start_utc": "2026-10-28T18:00:00Z",
+        "lookback_window_end_utc": "2026-10-31T18:00:00Z"
+      },
+      "evaluation_metadata": {
+        "non_evidentiary_for_agents": true,
+        "s_score": 0.52,
+        "theta_low": 0.4,
+        "theta_high": 0.85,
+        "aact_action_rate": 0.08,
+        "aip_rarity_score": 0.95
+      },
+      "transport_security": {
+        "nonce": "c0000000-0000-0000-0000-000000008820",
+        "sent_at": "2026-10-31T18:00:02Z",
+        "signature": "3045022100a7b9c02d184f938217",
+        "signer_identity": "PHASE1_FASTPATH_GATEWAY"
+      }
+    },
+    "entry_id": "LEDGER_000",
+    "prev_entry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "per_entry_salt": "6f4fa95c056d37666ed28ad043379cbc1ec5f0485d6297ea34e718c506cd9cc2",
+    "payload_commitment": "6ad586dd60d26880db7dab2bfd134dd34d789c333539d15050cf5d5865ee77d7",
+    "entry_hash": "5e0f10bb9110f6c5a0181fdd86f9da3da4a3061419a0713123dbe1c1ae33234c"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:05Z",
+    "agent_role": "ROLE_PLANNER",
+    "skill_invoked": "hypothesis_tree_builder.md",
+    "target_checklist_item": "CHK_8820_01",
+    "payload": {
+      "checklist_id": "CHK_8820_01",
+      "status": "PROPOSED",
+      "hypotheses": {
+        "H1": "Active pass-the-hash lateral movement and remote execution.",
+        "H2": "Scheduled database maintenance under authorized change window."
+      },
+      "verification_checklist": [
+        "chk_pth_auth_events",
+        "chk_wmi_process_tree",
+        "chk_network_socket_bindings",
+        "chk_context_lake_exception"
+      ]
+    },
+    "entry_id": "LEDGER_001",
+    "prev_entry_hash": "5e0f10bb9110f6c5a0181fdd86f9da3da4a3061419a0713123dbe1c1ae33234c",
+    "per_entry_salt": "33b7bbac12bd9cf87c03889f4d19ee818cc2d00cef17c0ba11415392e99942d9",
+    "payload_commitment": "00d9c080f3f00be83df98c7ca1bd0eeeba6563ad8370520e5f5c518d5155913b",
+    "entry_hash": "415ceb7969e74c1adf8d241e06d2096d98c7d5c1035eb985ba8983e54dfa8b68"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:10Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "auth_telemetry_auditor.md",
+    "target_checklist_item": "chk_pth_auth_events",
+    "payload": {
+      "finding_id": "FND_8820_01",
+      "checklist_item": "chk_pth_auth_events",
+      "technique": "T1550.002",
+      "account": "svc_dbadmin",
+      "auth_package": "NTLM",
+      "logon_type": 3,
+      "verdict": "ANOMALOUS_PTH_LOGON_DETECTED"
+    },
+    "entry_id": "LEDGER_002",
+    "prev_entry_hash": "415ceb7969e74c1adf8d241e06d2096d98c7d5c1035eb985ba8983e54dfa8b68",
+    "per_entry_salt": "89e0aad66ed0157024450f8a842422509458652d3a9228dbf954b5fe0370ab84",
+    "payload_commitment": "6f0fdea2aaca80c000c870a427deff2a7ec0e9a83c61636fd56248703655c0a5",
+    "entry_hash": "dd173c3a037b3fdfc5731e52cc9380402a6596023551c933bdb6789ac3ef6121"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:15Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "process_tree_collector.md",
+    "target_checklist_item": "chk_wmi_process_tree",
+    "payload": {
+      "finding_id": "FND_8820_02",
+      "checklist_item": "chk_wmi_process_tree",
+      "parent_process": "wmiprvse.exe",
+      "child_command": "wmic process call create",
+      "verdict": "REMOTE_WMI_EXECUTION_VERIFIED"
+    },
+    "entry_id": "LEDGER_003",
+    "prev_entry_hash": "dd173c3a037b3fdfc5731e52cc9380402a6596023551c933bdb6789ac3ef6121",
+    "per_entry_salt": "5e530660bc2db54605cc2f7d1efffaef262076ddc3ff3b4e6641d36eeb48ebef",
+    "payload_commitment": "1ad8a0dcbda30b33b6469067223a3dbd554dc2e55ad28c293feca27c859054c8",
+    "entry_hash": "2a5a8db38801e1c168925a9d844b69916ce671ed050aac0422a61a852fed0073"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:20Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "network_socket_tracer.md",
+    "target_checklist_item": "chk_network_socket_bindings",
+    "payload": {
+      "finding_id": "FND_8820_03",
+      "checklist_item": "chk_network_socket_bindings",
+      "external_ip": "198.51.100.24",
+      "remote_port": 445,
+      "verdict": "UNAUTHORIZED_REMOTE_SMB_BINDING"
+    },
+    "entry_id": "LEDGER_004",
+    "prev_entry_hash": "2a5a8db38801e1c168925a9d844b69916ce671ed050aac0422a61a852fed0073",
+    "per_entry_salt": "3ddd71cfdf61dabf031ea5470c37143cfc1faec2e6c9eda36a947cbf1c175b01",
+    "payload_commitment": "5866ebf754e54be5cc1ad21778e8dce8e9785a3354ce11be7a7ddbb871bb62d5",
+    "entry_hash": "942cfee91067174c6934bfe4058d7c53b09aecdd6f102f93cd5c6f766cdf7e1f"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:25Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "context_lake_auditor.md",
+    "target_checklist_item": "chk_context_lake_exception",
+    "payload": {
+      "finding_id": "FND_8820_04",
+      "checklist_item": "chk_context_lake_exception",
+      "ticket_reference": "CHG-00812",
+      "ticket_status": "CLOSED",
+      "verdict": "POTENTIAL_MAINTENANCE_CHANGE_EXISTS"
+    },
+    "entry_id": "LEDGER_005",
+    "prev_entry_hash": "942cfee91067174c6934bfe4058d7c53b09aecdd6f102f93cd5c6f766cdf7e1f",
+    "per_entry_salt": "87d67cbfbcacfc5ec46401c44604cdbf8ff055da38556b9738576b90c28b4c48",
+    "payload_commitment": "118b9a74d7ad333833c757765e4371d42de84098ed95524af205c95e2574de6d",
+    "entry_hash": "1d922cc0793bf6b258fd7579c74eb9b30824be3756bb317dc08391a3338b5374"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:30Z",
+    "agent_role": "ROLE_ADVERSARY",
+    "skill_invoked": "completeness_auditor.md",
+    "target_checklist_item": "chk_context_lake_exception",
+    "payload": {
+      "objection_id": "OBJ_8820_01",
+      "objection_type": "UNREFUTED_BENIGN_EXPLANATION",
+      "argument": "Change ticket CHG-00812 was active earlier today; an extension may explain the activity."
+    },
+    "entry_id": "LEDGER_006",
+    "prev_entry_hash": "1d922cc0793bf6b258fd7579c74eb9b30824be3756bb317dc08391a3338b5374",
+    "per_entry_salt": "6dfafebb5af44703f29c5828f3cd2595257f9281fe330271b63acd6df1cf083d",
+    "payload_commitment": "c746763a4d8818d6c2f5d3764dd0f1c6ba2c9a1895fc510905ac6a638170bdac",
+    "entry_hash": "ffbfa8728e195a7359933aefd14038fd9e5eed6ca87cd361814f9c21c034e128"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:35Z",
+    "agent_role": "ROLE_JUDGE",
+    "skill_invoked": "remand_synthesizer.md",
+    "target_checklist_item": "chk_context_lake_exception",
+    "payload": {
+      "remand_id": "REM_8820_01",
+      "status": "SUSTAINED",
+      "target_checklist_item": "chk_context_lake_exception",
+      "mandate": "Query change management API for definitive close timestamp and extension logs on CHG-00812."
+    },
+    "entry_id": "LEDGER_007",
+    "prev_entry_hash": "ffbfa8728e195a7359933aefd14038fd9e5eed6ca87cd361814f9c21c034e128",
+    "per_entry_salt": "af4713ff9423e4932de0f19759156eab2b9da0ceae1d8bc530ef9899934e16f6",
+    "payload_commitment": "040ca9b845a7e1ab99b6b55eb1cbdccad26b962e696f2c83c15f117f32cc43eb",
+    "entry_hash": "9fb1544b62d32de32f80ca8a8f0bd4a10691c2460ebfb61e19dccb3f1eba32c0"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:40Z",
+    "agent_role": "ROLE_INV_EXECUTOR",
+    "skill_invoked": "change_management_auditor.md",
+    "target_checklist_item": "chk_context_lake_exception",
+    "payload": {
+      "finding_id": "FND_8820_05",
+      "checklist_item": "chk_context_lake_exception",
+      "ticket_id": "CHG-00812",
+      "closed_at_utc": "2026-10-31T17:44:12Z",
+      "expired_at_utc": "2026-10-31T17:45:00Z",
+      "alert_timestamp_utc": "2026-10-31T18:00:00Z",
+      "verdict": "CHANGE_WINDOW_EXPIRED_PRIOR_TO_DETECTION"
+    },
+    "entry_id": "LEDGER_008",
+    "prev_entry_hash": "9fb1544b62d32de32f80ca8a8f0bd4a10691c2460ebfb61e19dccb3f1eba32c0",
+    "per_entry_salt": "64ae3c042224eeb7fd9839f1cd4d8aa72413bc7dc39cdc6d4fe5ff39f6456175",
+    "payload_commitment": "9e3ae61ab8253a7dd651a179e6cc2259cbaced52e5d9dbce914e0ff46e4e4b8c",
+    "entry_hash": "6c3c9936fa66691bb8c92ce8d237de46ce0af160700078c4917414e95f3926de"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:45Z",
+    "agent_role": "ROLE_ADVERSARY",
+    "skill_invoked": "concession_generator.md",
+    "target_checklist_item": "OBJ_8820_01",
+    "payload": {
+      "concession_id": "CONC_8820_01",
+      "status": "UNCONTESTED_MALICIOUS",
+      "withdrawn_objection": "OBJ_8820_01",
+      "concession_summary": "Ticket CHG-00812 closed at 17:44:12Z. Lateral movement post-dates maintenance window. Benign hypothesis refuted."
+    },
+    "entry_id": "LEDGER_009",
+    "prev_entry_hash": "6c3c9936fa66691bb8c92ce8d237de46ce0af160700078c4917414e95f3926de",
+    "per_entry_salt": "0f0a14031bb1bf9a20625c82c6a32b0e05b46c2b19320c209e531c8f42cb7f55",
+    "payload_commitment": "b8208605cf8981689c067951a309e344dc3d93d0115f78b1664117786e8ef4e7",
+    "entry_hash": "87ff48ea78d9fb486d5ac89a4a265ea2f832aed4903a088adce6e13b047d7f2e"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:00:50Z",
+    "agent_role": "ROLE_JUDGE",
+    "skill_invoked": "verdict_synthesizer.md",
+    "target_checklist_item": null,
+    "payload": {
+      "verdict_id": "VRD_8820_01",
+      "disposition": "TRUE_POSITIVE",
+      "threat_category": "Lateral Movement (Pass-the-Hash)",
+      "confidence_p": 0.965,
+      "severity_baseline": 9,
+      "severity_final": 9,
+      "candidate_actions": [
+        {
+          "action_type": "ISOLATE_HOST",
+          "asset_tier": 1,
+          "c_a": 9
+        },
+        {
+          "action_type": "REVOKE_ACTIVE_SESSIONS",
+          "asset_tier": 1,
+          "c_a": 3
+        },
+        {
+          "action_type": "BLOCK_IOC",
+          "asset_tier": 1,
+          "c_a": 2
+        },
+        {
+          "action_type": "DISABLE_ACCOUNT",
+          "asset_tier": 1,
+          "c_a": 6
+        }
+      ]
+    },
+    "entry_id": "LEDGER_010",
+    "prev_entry_hash": "87ff48ea78d9fb486d5ac89a4a265ea2f832aed4903a088adce6e13b047d7f2e",
+    "per_entry_salt": "08a0409dcc484ddd5e0d3c6a88fae9c574475e2f52476a335b6ec7ace561cf79",
+    "payload_commitment": "b25d8218739b3a9cdbc6a3d7cfb479d6fba277d7fd540b0d802464c98709563b",
+    "entry_hash": "01b5e630762717313ab0c398060b8e1e3689dc168a7a8e1044d5c26e0fd72006"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:01:00Z",
+    "agent_role": "ROLE_GATEWAY",
+    "skill_invoked": "pep_policy_enforcer.md",
+    "target_checklist_item": null,
+    "payload": {
+      "receipt_id": "REC_8820_01",
+      "receipt_type": "ESCALATION_RECEIPT",
+      "action_type": "ISOLATE_HOST",
+      "asset_tier": 1,
+      "c_a": 9,
+      "rsem": 49.1,
+      "decision": "ESCALATE",
+      "reason": "HARD_AUTONOMY_CEILING_EXCEEDED",
+      "executed": false
+    },
+    "entry_id": "LEDGER_011",
+    "prev_entry_hash": "01b5e630762717313ab0c398060b8e1e3689dc168a7a8e1044d5c26e0fd72006",
+    "per_entry_salt": "670aaee11289c05e61d0b474214845f5abf02bf63c3e72f213f57c60118f2c43",
+    "payload_commitment": "df609b7cc62f571f2cf5d50d94c5e6f7907fbd8f0b8fa0e2e05ea4145b9951b6",
+    "entry_hash": "dcd1401778f432e813885b6504742f9424897ad45c71e31b9b0c5a25c69d94c5"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:01:05Z",
+    "agent_role": "ROLE_REMEDIATION_EXECUTOR",
+    "skill_invoked": "soar_action_dispatcher.md",
+    "target_checklist_item": null,
+    "payload": {
+      "receipt_id": "REC_8820_02",
+      "receipt_type": "EXECUTION_RECEIPT",
+      "action_type": "REVOKE_ACTIVE_SESSIONS",
+      "asset_tier": 1,
+      "c_a": 3,
+      "rsem": 74.3,
+      "oob_status": "DENIED_BY_USER",
+      "decision": "ALLOW",
+      "reason": "ZONE2_POST_DENIAL_ALLOW",
+      "executed": true
+    },
+    "entry_id": "LEDGER_012",
+    "prev_entry_hash": "dcd1401778f432e813885b6504742f9424897ad45c71e31b9b0c5a25c69d94c5",
+    "per_entry_salt": "a8e6f5c4e1a18a2f8991a7aaa9daa69aeb8bf34c876679eda9ffbac1a3eae0ef",
+    "payload_commitment": "f283e2aa4ab45101596f4188df36c3999ff1284fa51c8145a5be07bcb166de65",
+    "entry_hash": "e2fa8f3010035e30dab960eb234d6ed200136bbad0e7cf7b71dfcb01c5a25f61"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:01:10Z",
+    "agent_role": "ROLE_REMEDIATION_EXECUTOR",
+    "skill_invoked": "soar_action_dispatcher.md",
+    "target_checklist_item": null,
+    "payload": {
+      "receipt_id": "REC_8820_03",
+      "receipt_type": "EXECUTION_RECEIPT",
+      "action_type": "BLOCK_IOC",
+      "asset_tier": 1,
+      "c_a": 2,
+      "rsem": 81.3,
+      "decision": "ALLOW",
+      "reason": "ZONE1_AUTONOMOUS_ALLOW",
+      "executed": true
+    },
+    "entry_id": "LEDGER_013",
+    "prev_entry_hash": "e2fa8f3010035e30dab960eb234d6ed200136bbad0e7cf7b71dfcb01c5a25f61",
+    "per_entry_salt": "54eda8ddcc3212dc609018827be62e362a0c0c46176c6816e781f801cdbd88ef",
+    "payload_commitment": "698ef529aeae8fbe3b586b4d662fabefcb6c4515e8283e4df3ba7ac13aad7980",
+    "entry_hash": "5633d743a8d31fd407569b408e85b1641fb4e57eb515337af52ab84fb2bdd939"
+  },
+  {
+    "investigation_id": "INV-2026-8820",
+    "tenant_id": "a0000000-0000-0000-0000-000000000001",
+    "timestamp_utc": "2026-10-31T18:01:15Z",
+    "agent_role": "ROLE_GATEWAY",
+    "skill_invoked": "pep_policy_enforcer.md",
+    "target_checklist_item": null,
+    "payload": {
+      "receipt_id": "REC_8820_04",
+      "receipt_type": "ESCALATION_RECEIPT",
+      "action_type": "DISABLE_ACCOUNT",
+      "asset_tier": 1,
+      "c_a": 6,
+      "rsem": 59.1,
+      "decision": "ESCALATE",
+      "reason": "HARD_AUTONOMY_CEILING_EXCEEDED",
+      "executed": false,
+      "mandate": "Four-Eyes Console Authorization Required"
+    },
+    "entry_id": "LEDGER_014",
+    "prev_entry_hash": "5633d743a8d31fd407569b408e85b1641fb4e57eb515337af52ab84fb2bdd939",
+    "per_entry_salt": "35b8c7e5192bf88d28ba6e55f7528413f1aec50d9c6023f36aa231f5630e2e04",
+    "payload_commitment": "f754117a65a24251a16af2602eaa5888f96403ed36a7af9d20586ea5c296d2de",
+    "entry_hash": "5a22007d561c17a5249d5e43a3f95c853d382fbd442d65b01a1560f4ef7ddad8"
+  }
+]

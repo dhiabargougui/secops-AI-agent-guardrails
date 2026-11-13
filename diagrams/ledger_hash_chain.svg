@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .box-block { fill: #1e293b; stroke: #334155; stroke-width: 2; rx: 8; ry: 8; }
+      .box-header { fill: #0284c7; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: bold; fill: #ffffff; }
+      .text-title { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 20px; font-weight: bold; fill: #f8fafc; }
+      .text-subtitle { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .text-label { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 12px; font-weight: 600; fill: #cbd5e1; }
+      .text-code { font-family: 'Consolas', 'Courier New', monospace; font-size: 11px; fill: #38bdf8; }
+      .text-hash { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #a5b4fc; }
+      .text-salt { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #f472b6; }
+      .inner-box { fill: #0f172a; stroke: #475569; stroke-width: 1; rx: 4; ry: 4; }
+      .arrow { stroke: #38bdf8; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-sec { stroke: #f472b6; stroke-width: 1.5; stroke-dasharray: 4,3; fill: none; marker-end: url(#arrowhead-sec); }
+      .badge-tag { fill: #1e3a8a; stroke: #3b82f6; stroke-width: 1; rx: 4; ry: 4; }
+      .badge-text { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 11px; font-weight: bold; fill: #93c5fd; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowhead-sec" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f472b6" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="580" class="bg" />
+
+  <!-- Header -->
+  <text x="40" y="45" class="text-title">Cryptographic Evidence Ledger (Invariant #3)</text>
+  <text x="40" y="70" class="text-subtitle">Append-only HMAC-SHA256 payload commitment (Eq. 14) with SHA-256 block linking and external KMS key isolation</text>
+
+  <!-- Genesis Block: LEDGER_000 -->
+  <g transform="translate(40, 100)">
+    <rect width="280" height="420" class="box-block" />
+    <path d="M 0 8 Q 0 0 8 0 L 272 0 Q 280 0 280 8 L 280 32 L 0 32 Z" fill="#0369a1" />
+    <text x="14" y="22" class="box-header">LEDGER_000 (Genesis Anchor)</text>
+    
+    <!-- Previous Hash -->
+    <text x="14" y="55" class="text-label">Previous Entry Hash (H0):</text>
+    <rect x="14" y="62" width="252" height="26" class="inner-box" />
+    <text x="20" y="79" class="text-hash">00000000000000000000... (64 nulls)</text>
+
+    <!-- Canonical Metadata -->
+    <text x="14" y="112" class="text-label">Canonical Metadata:</text>
+    <rect x="14" y="119" width="252" height="74" class="inner-box" />
+    <text x="20" y="136" class="text-code">entry_id: "LEDGER_000"</text>
+    <text x="20" y="152" class="text-code">agent_role: "ROLE_ROUTER"</text>
+    <text x="20" y="168" class="text-code">skill: "INGEST_HANDOFF"</text>
+    <text x="20" y="184" class="text-code">tenant_id: "a0000000-0000-..."</text>
+
+    <!-- Payload & HMAC -->
+    <text x="14" y="215" class="text-label">Payload &amp; Equation 14 Commitment:</text>
+    <rect x="14" y="222" width="252" height="85" class="inner-box" />
+    <text x="20" y="239" class="text-code">payload: {incident_id, observables...}</text>
+    <text x="20" y="258" class="text-salt">per_entry_salt: 32-byte secret</text>
+    <text x="20" y="278" class="text-label">Commitment = HMAC-SHA256(salt, payload)</text>
+    <text x="20" y="295" class="text-hash">d8f4b1c29e4a8b73... (32 bytes)</text>
+
+    <!-- Entry Hash Output -->
+    <text x="14" y="332" class="text-label">Entry Hash (H_0):</text>
+    <rect x="14" y="339" width="252" height="42" class="inner-box" style="stroke: #38bdf8;" />
+    <text x="20" y="356" class="text-code">SHA-256(meta || commit || prev_hash)</text>
+    <text x="20" y="372" class="text-hash">8f3b14a29c1e7d04... (Entry Hash)</text>
+
+    <rect x="14" y="390" width="130" height="20" class="badge-tag" />
+    <text x="22" y="404" class="badge-text">STATUS: SEALED</text>
+  </g>
+
+  <!-- Arrow from 000 to 001 -->
+  <path d="M 320 280 L 390 280" class="arrow" />
+
+  <!-- Block LEDGER_001 -->
+  <g transform="translate(400, 100)">
+    <rect width="280" height="420" class="box-block" />
+    <path d="M 0 8 Q 0 0 8 0 L 272 0 Q 280 0 280 8 L 280 32 L 0 32 Z" fill="#0284c7" />
+    <text x="14" y="22" class="box-header">LEDGER_001 (Checklist Anchor)</text>
+    
+    <!-- Previous Hash Link -->
+    <text x="14" y="55" class="text-label">Previous Entry Hash (H_prev):</text>
+    <rect x="14" y="62" width="252" height="26" class="inner-box" style="stroke: #38bdf8;" />
+    <text x="20" y="79" class="text-hash">8f3b14a29c1e7d04... (= H_0)</text>
+
+    <!-- Canonical Metadata -->
+    <text x="14" y="112" class="text-label">Canonical Metadata:</text>
+    <rect x="14" y="119" width="252" height="74" class="inner-box" />
+    <text x="20" y="136" class="text-code">entry_id: "LEDGER_001"</text>
+    <text x="20" y="152" class="text-code">agent_role: "ROLE_PLANNER"</text>
+    <text x="20" y="168" class="text-code">skill: "INITIALIZE_CHECKLIST"</text>
+    <text x="20" y="184" class="text-code">target: "CHK_001"</text>
+
+    <!-- Payload & HMAC -->
+    <text x="14" y="215" class="text-label">Payload &amp; Equation 14 Commitment:</text>
+    <rect x="14" y="222" width="252" height="85" class="inner-box" />
+    <text x="20" y="239" class="text-code">payload: {checklist_items: [...]}</text>
+    <text x="20" y="258" class="text-salt">per_entry_salt: 32-byte secret</text>
+    <text x="20" y="278" class="text-label">Commitment = HMAC-SHA256(salt, payload)</text>
+    <text x="20" y="295" class="text-hash">7c20a4b11f92e850... (32 bytes)</text>
+
+    <!-- Entry Hash Output -->
+    <text x="14" y="332" class="text-label">Entry Hash (H_1):</text>
+    <rect x="14" y="339" width="252" height="42" class="inner-box" style="stroke: #38bdf8;" />
+    <text x="20" y="356" class="text-code">SHA-256(meta || commit || prev_hash)</text>
+    <text x="20" y="372" class="text-hash">a94b301cde8821fa... (Entry Hash)</text>
+
+    <rect x="14" y="390" width="130" height="20" class="badge-tag" />
+    <text x="22" y="404" class="badge-text">STATUS: SEALED</text>
+  </g>
+
+  <!-- Arrow from 001 to 002... -->
+  <path d="M 680 280 L 750 280" class="arrow" />
+
+  <!-- Tip Block / WORM Head Anchor -->
+  <g transform="translate(760, 100)">
+    <rect width="300" height="420" class="box-block" style="stroke: #6366f1;" />
+    <path d="M 0 8 Q 0 0 8 0 L 292 0 Q 300 0 300 8 L 300 32 L 0 32 Z" fill="#4f46e5" />
+    <text x="14" y="22" class="box-header">LEDGER_tip (Head &amp; WORM Anchor)</text>
+    
+    <!-- Linkage -->
+    <text x="14" y="55" class="text-label">Previous Entry Hash (H_tip-1):</text>
+    <rect x="14" y="62" width="272" height="26" class="inner-box" />
+    <text x="20" y="79" class="text-hash">...links back to genesis LEDGER_000</text>
+
+    <!-- Decision Receipt -->
+    <text x="14" y="112" class="text-label">Receipt / Grounded Verdict:</text>
+    <rect x="14" y="119" width="272" height="74" class="inner-box" />
+    <text x="20" y="136" class="text-code">agent_role: "ROLE_REM_EXECUTOR"</text>
+    <text x="20" y="152" class="text-code">skill: "RECORD_EXECUTION_RECEIPT"</text>
+    <text x="20" y="168" class="text-code">status: "EXECUTED", receipt_id: "REC_..."</text>
+    <text x="20" y="184" class="text-code">citation: "LEDGER_010"</text>
+
+    <!-- External Key Store Callout -->
+    <text x="14" y="215" class="text-label">External Key Store Isolation (KMS):</text>
+    <rect x="14" y="222" width="272" height="85" class="inner-box" style="stroke: #ec4899;" />
+    <text x="20" y="239" class="text-salt">key_store[entry_id] = salt</text>
+    <text x="20" y="258" class="text-label">Salts isolated from ledger block.</text>
+    <text x="20" y="278" class="text-label">Attacker write cannot forge HMAC.</text>
+    <text x="20" y="295" class="text-hash">Fail-closed on key store desync</text>
+
+    <!-- Anchored Head -->
+    <text x="14" y="332" class="text-label">Anchored WORM Head Hash:</text>
+    <rect x="14" y="339" width="272" height="42" class="inner-box" style="stroke: #6366f1;" />
+    <text x="20" y="356" class="text-code">expected_head = GOLDEN_HEAD_HASH</text>
+    <text x="20" y="372" class="text-hash">Detects tip truncation (LEDGER_004)</text>
+
+    <rect x="14" y="390" width="160" height="20" class="badge-tag" style="fill: #312e81; stroke: #6366f1;" />
+    <text x="22" y="404" class="badge-text">WORM HEAD ANCHOR</text>
+  </g>
+</svg>
