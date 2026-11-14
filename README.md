@@ -99,8 +99,10 @@ py -3.12 -m venv .venv
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# 3. Run native OPA policy tests (using pre-staged binary)
-.\tools\opa.exe test policies/ -v
+# 3. Run native OPA policy tests (system PATH or pre-staged binary)
+opa test policies/ -v
+# or if using a repo-local binary:
+# .\tools\opa.exe test policies/ -v
 
 # 4. Run full pytest suite with coverage
 pytest --cov=src -v
@@ -117,7 +119,7 @@ Every architectural safety invariant is paired with dedicated automated tests:
 | **#1 Actuation Integrity** | Zero-credential agents; actuation requires signed orders bound to PEP `ALLOW` receipts with anti-replay nonces and clock bounds. | `src/execution/actuator.py` | `tests/test_invariants.py::TestInvariant1ActuationIntegrity` |
 | **#2 Cognitive Anti-Anchoring** | Strips heuristic non-conformity scores and thresholds from intake payloads; recursive scan rejects smuggled keys. | `src/policy/anti_anchoring.py` | `tests/test_anti_anchoring.py`, `tests/test_invariants.py::TestInvariant2AntiAnchoring` |
 | **#3 Cryptographic Ledger** | Append-only hash chain with HMAC commitments, isolated KMS salts, and WORM head verification. | `src/ledger/chain.py` | `tests/test_chain.py`, `tests/test_walkthroughs.py`, `tests/test_invariants.py::TestInvariant3LedgerTamperResistance` |
-| **#4 Hard Autonomy Ceiling** | Disruption cost $C_A \ge 4$ strictly requires human approval. Raise-only severity ($C_I = \max(C_{I,\text{base}}, C_I(\text{finding\_class}))$). | `src/policy/rsem.py`, `policies/soc_containment.rego`, `src/policy/pep_gate.py` | `tests/test_rsem.py`, `tests/test_pep_gate.py`, `tests/test_invariants.py::TestInvariant4AutonomyCeilingAndSeverity` |
+| **#4 Hard Autonomy Ceiling** | Disruption cost $C_A \ge 4$ strictly requires human approval. Raise-only severity (C_I = max(C_I,base, C_I(finding_class))). | `src/policy/rsem.py`, `policies/soc_containment.rego`, `src/policy/pep_gate.py` | `tests/test_rsem.py`, `tests/test_pep_gate.py`, `tests/test_invariants.py::TestInvariant4AutonomyCeilingAndSeverity` |
 | **#5 Pre-Release Safety** | Tier 0/1 critical assets barred from automated close. Hold releases require Four-Eyes dual control ($E_1 \neq E_2$). | `src/policy/release_gate.py` | `tests/test_invariants.py::TestInvariant5PreReleaseSafety` |
 
 ---
